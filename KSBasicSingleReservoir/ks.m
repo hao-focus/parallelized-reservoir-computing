@@ -8,19 +8,19 @@ ModelParams.d = 22;  % periodicity length
 rng('shuffle') % 根据当前时间为随机数生成器提供种子 这样，rand、randi 和 randn
 % 会在您每次调用 rng 时生成不同的数字序列。
 init_cond = 0.6*(-1 + 2*rand(1,ModelParams.N)); %random initial condition
-data = transpose(kursiv_solve(init_cond,ModelParams)); 
+data = transpose(kursiv_solve(init_cond,ModelParams)); % 64*100000
 
-measured_vars = 1:1:ModelParams.N;
-num_measured = length(measured_vars);
+measured_vars = 1:1:ModelParams.N; % 1*64
+num_measured = length(measured_vars); % 64
 measurements = data(measured_vars, :);% + z;
 
 %%
 %train reservoir
-[num_inputs,~] = size(measurements);
+[num_inputs,~] = size(measurements); % 64
 resparams.radius = 0.6; % spectral radius
 resparams.degree = 3; % connection degree
 approx_res_size = 3000; % reservoir size
-resparams.N = floor(approx_res_size/num_inputs)*num_inputs; % actual reservoir size divisible by number of inputs
+resparams.N = floor(approx_res_size/num_inputs)*num_inputs; % actual reservoir size divisible by number of inputs # 2944
 resparams.sigma = 0.5; % input weight scaling
 resparams.train_length = 70000; % number of points used to train
 resparams.num_inputs = num_inputs; 
@@ -29,7 +29,7 @@ resparams.beta = 0.0001; %regularization parameter
 
 [x, H, A, win] = train_reservoir(resparams, measurements(:, 1:resparams.train_length));
 
-[output,~] = predict(A,win,resparams,x,H);
+[output,~] = predict(A,win,resparams,x,H); % x: states, H: Wout, output, 64*2000
 %%
 figure()
 lambda_max = 0.05; %(max lyapunov exponent for ks model parameter d = 22)

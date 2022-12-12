@@ -10,8 +10,8 @@ for i=1:resparams.num_inputs
 end
 %win = resparams.sigma*(-1 + 2*rand(resparams.N, resparams.num_inputs));
 
-states = reservoir_layer(A, win, data, resparams);
+states = reservoir_layer(A, win, data, resparams); % generate the reservoir states
 
 wout = train(resparams, states, data);
 
-x = states(:,end);
+x = states(:,end); % reservoir state from the last time step, 2944*1
