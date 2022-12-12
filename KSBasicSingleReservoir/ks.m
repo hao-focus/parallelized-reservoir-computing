@@ -5,7 +5,8 @@ ModelParams.tau = 0.25; %% time step
 ModelParams.nstep = 100000; % number of time steps to generate
 ModelParams.N = 64;  %number of spatial grid points 
 ModelParams.d = 22;  % periodicity length 
-rng('shuffle')
+rng('shuffle') % 根据当前时间为随机数生成器提供种子 这样，rand、randi 和 randn
+% 会在您每次调用 rng 时生成不同的数字序列。
 init_cond = 0.6*(-1 + 2*rand(1,ModelParams.N)); %random initial condition
 data = transpose(kursiv_solve(init_cond,ModelParams)); 
 
